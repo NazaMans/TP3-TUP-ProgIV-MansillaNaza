@@ -5,6 +5,7 @@ import './index.css'
 import "@picocss/pico";
 import { AuthPage, AuthProvider } from './auth/auth';
 import {BrowserRouter, Route, Routes } from "react-router";
+import Layout from './layout/Layout';
 
 
 createRoot(document.getElementById('root')).render(
@@ -12,7 +13,11 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <BrowserRouter>
       <Routes>
-        
+        <Route path="/" element={<Layout />}>
+
+        <Route index element={<Home />} />
+
+        </Route>
       </Routes>
       </BrowserRouter>
     </AuthProvider>
