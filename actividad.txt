@@ -1,0 +1,28 @@
+Ejercicio B – Gestión de pacientes, médicos y turnos
+Desarrollar una aplicación que permita gestionar la asignación de turnos entre pacientes y médicos. A parte de los requisitos generales el ejercicio debe cumplir lo siguiente:
+•
+Frontend:
+◦
+Pantalla principal con paginas de:
+▪
+Listado de pacientes.
+▪
+Listado de médicos.
+▪
+Carga y visualización de turnos por paciente y médico con modificación de estados.
+◦
+Formularios para alta, modificación y eliminación de pacientes y médicos.
+◦
+Posibilidad de asignar y administrar turnos.
+◦
+Cambiar el estado del turno y registrar observaciones.
+•
+Backend:
+◦
+Estructura de entidades:
+▪
+Paciente: id, nombre, apellido, DNI, fecha de nacimiento, obra social.
+▪
+Médico: id, nombre, apellido, especialidad, matrícula profesional.
+▪
+Turno: id, paciente_id, medico_id, fecha, hora, estado (pendiente, atendido, cancelado), observaciones.
