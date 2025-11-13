@@ -83,11 +83,11 @@ export const AuthProvider = ({children}) => {
 
 };
 
-export const AuthPage ({children}) => {
+export const AuthPage = ({children}) => {
     const {isAuthenticated} = useAuth();
 
     if (!isAuthenticated){
-        return <h2>Debes ingresar para poder ver la pagina >:)</h2>
+        return <h2>Debes ingresar para poder ver la pagina</h2>
     }
 
     return children;
