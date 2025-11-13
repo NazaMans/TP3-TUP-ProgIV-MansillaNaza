@@ -1,0 +1,23 @@
+@url = http://localhost:3000/usuarios
+
+### GET de usuarios
+
+GET {{url}}
+
+### POST de usuario
+
+POST {{url}}
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellido": "Gomez",
+    "email": "juancito@gmail.com",
+    "password": "contraseña123"
+}
+
+### DELETE de usuario
+DELETE {{url}}/3
+
+### PUT de usuario
+PUT {{url}}/

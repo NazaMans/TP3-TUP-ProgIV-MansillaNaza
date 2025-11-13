@@ -1,0 +1,22 @@
+@url = http://localhost:3000/medicos
+
+###GET de medicos
+
+GET {{url}}
+
+### POST de medico
+POST {{url}}
+Content-Type: application/json
+
+{
+    "nombre": "Anita",
+    "apellido": "Flores",
+    "especialidad": "Cardiologia",
+    "matricula_profesional": "123456123456"
+}
+
+###DELETE de medico
+DELETE {{url}}/2
+
+### PUT de medico
+PUT {{url}}/2
