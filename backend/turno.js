@@ -36,13 +36,48 @@ router.post("/",verificarAutenticacion,
 
     });
 
-router.put("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+router.put("/:id",verificarAutenticacion, validarId,
+    body("paciente_id", "Paciente no valido").isInt({min:1}),
+    body("medico_id", "Medico no valido").isInt({min:1}),
+    body("fecha", "Fecha no valida").isDate(),
+    body("hora", "Hora no valida").isTime(),
+    body("estado", "Estado no valido").isString().isIn(["pendiente", "atendido", "cancelado"]),
+    body("observaciones", "Observaciones no validas").isString().isLength({max:200}),
+    verificarValidaciones, 
+    async (req, res) => {
+
+    const id = Number(req.params.id);
+
+    const [verificar] = await db.execute("SELECT * FROM turno WHERE id = ?", [id]);
+    
+    if (verificar.length === 0){
+        return res.status(404).json({success: false, message: "Turno no encontrado"});
+    }
+
+    const {paciente_id, medico_id, fecha, hora, estado, observaciones} = req.body;
+
+
+    const [validarDiferente] = await db.execute("SELECT * FROM turno WHERE fecha = ? AND hora = ? AND id != ?", [fecha, hora, id]);
+
+    if (validarDiferente.length > 0){
+        return res.status(400).json({success: false, message: "Fecha y hora ya ocupadas"});
+    }
+
+    const [result] = await db.execute("UPDATE turno SET paciente_id = ?, medico_id = ?, fecha = ?, hora = ?, estado = ?, observaciones = ? WHERE id = id", [paciente_id, medico_id, fecha, hora, estado, observaciones, id]);
+
+    res.json({success: true, data: {id, paciente_id, medico_id, fecha, hora, estado, observaciones}});
 
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
+
+    const [verificar] = await db.execute("SELECT * FROM turno WHERE id = ?", [id]);
+
+    if (verificar.length === 0){
+        return res.status(404).json({success: false, message: "Turno no encontrado"});
+    }
 
     await db.execute("DELETE FROM turno WHERE id = ?", [id]);
 
