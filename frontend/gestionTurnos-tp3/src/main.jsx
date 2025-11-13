@@ -8,6 +8,7 @@ import {BrowserRouter, Route, Routes } from "react-router";
 import Layout from './layout/Layout';
 import { TablaUsuarios } from './usuarios/TablaUsuarios';
 import { TablaMedicos } from './medicos/TablaMedicos';
+import { TablaTurnos } from './turnos/TablaTurnos';
 
 
 createRoot(document.getElementById('root')).render(
@@ -31,6 +32,15 @@ createRoot(document.getElementById('root')).render(
         element={
           <AuthPage>
             <TablaMedicos/>
+          </AuthPage>
+        }
+        />
+
+        <Route
+        path="turnos"
+        element={
+          <AuthPage>
+            <TablaTurnos/>
           </AuthPage>
         }
         />

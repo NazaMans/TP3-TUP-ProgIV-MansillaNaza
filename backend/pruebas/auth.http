@@ -23,5 +23,5 @@ GET {{url}}/medicos
 Authorization: Bearer {{token}}
 
 ###GET turnos
-GET {{url}}/turnos?medico_id=1
+GET {{url}}/turnos
 Authorization: Bearer {{token}}

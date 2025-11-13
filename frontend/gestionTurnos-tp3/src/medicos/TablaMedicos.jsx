@@ -10,7 +10,7 @@ export function TablaMedicos(){
     const [medicos, setMedicos] = useState([]);
 
     const fetchMedicos = useCallback(
-        async () =>{
+        async () => {
             const response = await fetchAuth("http://localhost:3000/medicos");
             const data = await response.json();
 
