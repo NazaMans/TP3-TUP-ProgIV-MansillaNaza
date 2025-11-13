@@ -1,22 +1,46 @@
 import express from "express";
 import { db } from "./db.js";
 import { validarId, verificarValidaciones } from "./validaciones.js";
-import {body, param} from "express-validator";
+import {body, param, query} from "express-validator";
 import { verificarAutenticacion } from "./auth.js";
 
 //turno: id, paciente_id, medico_id, fecha, hora, estado, observaciones
 
 const router = express.Router();
 
-router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) => {
+router.get("/",verificarAutenticacion,
+    query("paciente_id", "Id de paciente no valido").optional().isInt({min:1}),
+    query("medico_id", "Id de medico no valido").optional().isInt({min:1}),
+    verificarValidaciones, async (req, res) => {
 
-    const sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, t.fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id"
+    const {paciente_id, medico_id} = req.query;
 
-    const [rows] = await db.execute(sql);
+    let sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, t.fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id";
+
+    const params = [];
+    const condiciones = [];
+
+    if (paciente_id){
+        condiciones.push("t.paciente_id = ?");
+        params.push(paciente_id);
+    }
+
+    if (medico_id){
+        condiciones.push("t.medico_id = ?");
+        params.push(medico_id);
+    }
+
+    if (condiciones.length > 0){
+        sql += " WHERE " + condiciones.join(" AND ");
+    }
+
+    const [rows] = await db.execute(sql, params);
 
     res.json({success: true, data: rows});
 
 });
+
+
 
 router.post("/",verificarAutenticacion, 
     body("paciente_id", "Paciente no valido").isInt({min:1}),
