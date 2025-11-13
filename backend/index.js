@@ -5,6 +5,7 @@ import { conectarDB } from "./db.js";
 import usuarioRouter from "./usuario.js"
 import routerMedicos from "./medico.js"
 import routerPacientes from "./paciente.js"
+import routerTurnos from "./turno.js"
 
 conectarDB();
 
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
 app.use("/usuarios", usuarioRouter);
 app.use("/medicos", routerMedicos);
 app.use("/pacientes", routerPacientes);
+app.use("/turnos", routerTurnos);
+
 
 app.listen(port, () => {
     console.log("La aplicacion esta andando en el puerto 3000, lo quiero profe :)")

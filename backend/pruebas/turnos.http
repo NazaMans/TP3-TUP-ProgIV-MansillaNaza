@@ -1,0 +1,23 @@
+@url = http://localhost:3000/turnos
+
+###GET de turnos
+
+GET {{url}}
+### POST de turno
+POST {{url}}
+Content-Type: application/json
+
+{
+    "paciente_id": 2,
+    "medico_id": 1,
+    "fecha": "2024-12-15", 
+    "hora": "16:30",
+    "estado": "pendiente",
+    "observaciones": "El paciente es medio medio" 
+}
+
+###DELETE de turno
+DELETE {{url}}/1
+
+### PUT de turno
+PUT {{url}}/2
