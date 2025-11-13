@@ -1,6 +1,6 @@
 import express from "express";
-import { db } from "./db";
-import { validarId, verificarValidaciones } from "./validaciones";
+import { db } from "./db.js";
+import { validarId, verificarValidaciones } from "./validaciones.js";
 import {body, param} from "express-validator";
 import bycryp from "bcrypt";
 
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 
 });
 
-router.get("(:id", validarId, verificarValidaciones, async (req, res) => {
+router.get(":id", validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
     const [rows] =  await db.execute("SELECT id, nombre, email WHERE id = ?", [id]);
@@ -53,7 +53,7 @@ router.post("/",
 
     const  [result] = await db.execute("INSERT INTO usuario (nombre, apellido, email, password_hash) VALUES (?, ?, ?, ?)", [nombre, apellido, email, contraHasheada])
 
-    res.status(201).json({succes: true, data: {id: result.insertId, username, apellido, nombre},});
+    res.status(201).json({succes: true, data: {id: result.insertId, nombre, apellido, nombre},});
   
 });
 
