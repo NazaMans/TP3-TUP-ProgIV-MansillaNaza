@@ -6,6 +6,7 @@ import usuarioRouter from "./usuario.js"
 import routerMedicos from "./medico.js"
 import routerPacientes from "./paciente.js"
 import routerTurnos from "./turno.js"
+import routerAuth from "./auth.js"
 
 conectarDB();
 
@@ -25,6 +26,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/medicos", routerMedicos);
 app.use("/pacientes", routerPacientes);
 app.use("/turnos", routerTurnos);
+app.use("/auth", routerAuth)
 
 
 app.listen(port, () => {
