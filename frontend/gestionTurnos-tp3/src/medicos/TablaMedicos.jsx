@@ -34,7 +34,7 @@ export function TablaMedicos(){
         <article>
             <h2>Tabla de los medicos</h2>
             <Link role="button" to="/medicos/crear">
-            Crear nuevo usuario
+            Crear nuevo medico
             </Link>
             <div className="group">
                 <table>
@@ -58,10 +58,10 @@ export function TablaMedicos(){
                                 <td>{m.matricula_profesional}</td>
                                 <td>
                                     <div>
-                                        <Link role="button" to={`/usuarios/${m.id}`}>
+                                        <Link role="button" to={`/medicos/${m.id}`}>
                                         Ver
                                         </Link>
-                                        <Link role="button" to={`/usuarios/${m.id}/modificar`}>
+                                        <Link role="button" to={`/medicos/${m.id}/modificar`}>
                                         Modificar
                                         </Link>
                                     </div>
