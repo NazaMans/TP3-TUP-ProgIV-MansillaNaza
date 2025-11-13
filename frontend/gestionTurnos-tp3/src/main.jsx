@@ -7,6 +7,7 @@ import { AuthPage, AuthProvider } from './auth/auth';
 import {BrowserRouter, Route, Routes } from "react-router";
 import Layout from './layout/Layout';
 import { TablaUsuarios } from './usuarios/TablaUsuarios';
+import { TablaMedicos } from './medicos/TablaMedicos';
 
 
 createRoot(document.getElementById('root')).render(
@@ -24,6 +25,15 @@ createRoot(document.getElementById('root')).render(
            <TablaUsuarios/>
           </AuthPage>
         } />
+
+        <Route
+        path="medicos"
+        element={
+          <AuthPage>
+            <TablaMedicos/>
+          </AuthPage>
+        }
+        />
 
         </Route>
       </Routes>
