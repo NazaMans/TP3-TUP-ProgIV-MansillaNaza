@@ -1,0 +1,23 @@
+@url = http://localhost:3000/pacientes
+
+###GET de pacientes
+
+GET {{url}}
+
+### POST de paciente
+POST {{url}}
+Content-Type: application/json
+
+{
+    "nombre": "Ramirito",
+    "apellido": "Piolito",
+    "dni": "56456456",
+    "fecha_nacimiento": "2005-12-20",
+    "obra_social": "APOS"
+}
+
+###DELETE de paciente
+DELETE {{url}}/1
+
+### PUT de paciente
+PUT {{url}}/2
