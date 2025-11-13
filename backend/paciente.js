@@ -16,6 +16,22 @@ router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) =
 
 });
 
+router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) =>{
+   
+    const id = Number(req.params.id);
+
+    const [validacion] = await db.execute("SELECT * FROM paciente WHERE id = ?", [id]);
+
+    if (validacion.length === 0){
+        return res.status(404).json({success: false, message: "Paciente no encotnrado"});
+    }
+
+    const [result] = await db.execute("SELECT * FROM paciente WHERE id = ?", [id]);
+
+    res.json({success: true, data: result[0]});
+
+});
+
 router.post("/",
     verificarAutenticacion,
     body("nombre", "Nombre no valido").isLength({max:20}),
