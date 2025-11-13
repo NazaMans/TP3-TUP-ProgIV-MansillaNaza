@@ -48,15 +48,45 @@ router.post("/",
 
     })
 
-router.put("/:id", (req, res) => {
+router.put("/:id",verificarAutenticacion, validarId,
+    body("nombre", "Nombre no valido").isLength({max:20}),
+    body("apellido", "Apellido no valido").isLength({max:20}),
+    body("especialidad", "Especialidad no valida").isLength({max:20}),
+    body("matricula_profesional", "Matricula no valida").isLength({min:10, max:30}),
+    verificarValidaciones, async (req, res) => {
 
+    const id = Number(req.params.id);
+
+    const [verificar] = await db.execute("SELECT * FROM medico WHERE id = ?", [id]);
+
+    if (verificar.length === 0){
+        return res.status(404).json({success: false, message: "Medico no encontrado"});
+    }
+
+    const {nombre, apellido, especialidad, matricula_profesional} = req.body;
+
+    const [validarDiferente] = await db.execute("SELECT * FROM medico WHERE matricula_profesional = ? AND id != ?", [matricula_profesional, id]);
+
+    if (validarDiferente.length > 0){
+        return res.status(400).json({success: false, message: "Matricula ya registrada"});
+    }
+
+    const [result] = await db.execute("UPDATE medico SET nombre = ?, apellido = ?, especialidad = ?, matricula_profesional = ? WHERE id = ?", [nombre, apellido, especialidad, matricula_profesional, id]);
+
+    res.json({success: true, data: {id, nombre, apellido, especialidad, matricula_profesional}});
 
 
 });
 
-router.delete("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+router.delete("/:id",verificarAutenticacion, validarId, async (req, res) => {
 
     const id = Number(req.params.id);
+
+    const [verificar] = await db.execute("SELECT * FROM medico WHERE id = ?", [id]);
+
+    if (verificar.length === 0){
+        return res.status(404).json({success: false, message: "Medico no encontrado"});
+    }
 
     await db.execute("DELETE FROM medico WHERE id = ?", [id]);
 
