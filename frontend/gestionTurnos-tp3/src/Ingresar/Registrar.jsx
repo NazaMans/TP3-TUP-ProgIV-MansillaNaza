@@ -32,6 +32,9 @@ export const Registrar = () => {
       }
       return window.alert("Error al crear usuario");
     }
+
+    setOpen(false);
+
     navigate("/usuarios");
   };
 
