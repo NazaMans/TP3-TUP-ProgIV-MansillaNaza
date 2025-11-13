@@ -2,12 +2,13 @@ import express from "express";
 import { db } from "./db.js";
 import { validarId, verificarValidaciones } from "./validaciones.js";
 import {body, param} from "express-validator";
+import { verificarAutenticacion } from "./auth.js";
 
 //turno: id, paciente_id, medico_id, fecha, hora, estado, observaciones
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) => {
 
     const sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, t.fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id"
 
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
 
 });
 
-router.post("/", 
+router.post("/",verificarAutenticacion, 
     body("paciente_id", "Paciente no valido").isInt({min:1}),
     body("medico_id", "Medico no valido").isInt({min:1}),
     body("fecha", "Fecha no valida").isDate(),
@@ -35,11 +36,11 @@ router.post("/",
 
     });
 
-router.put("/:id", (req, res) => {
+router.put("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
 });
 
-router.delete("/:id", validarId, verificarValidaciones, async (req, res) => {
+router.delete("/:id", async (req, res) => {
 
     const id = Number(req.params.id);
 

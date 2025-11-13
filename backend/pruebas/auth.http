@@ -1,0 +1,23 @@
+@url=http://localhost:3000
+
+###Login
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "juancito@gmail.com" ,
+    "password": "contraseña123"
+}
+
+###
+@token = {{login.response.body.token}}
+
+###
+GET {{url}}/usuarios
+Authorization: Bearer {{token}}
+
+###GET medicos
+
+GET {{url}}/medicos
+Authorization: Bearer {{token}}

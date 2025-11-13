@@ -2,12 +2,13 @@ import express from "express";
 import { db } from "./db.js";
 import { validarId, verificarValidaciones } from "./validaciones.js";
 import {body, param} from "express-validator";
+import { verificarAutenticacion } from "./auth.js";
 
 //paciente: id, nombre, apellido, dni, fecha_nacimiento, obra_social
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) => {
 
     const [rows] = await db.execute("SELECT * FROM paciente");
 
@@ -16,6 +17,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/",
+    verificarAutenticacion,
     body("nombre", "Nombre no valido").isLength({max:20}),
     body("apellido", "Apellido no valido").isLength({max:20}),
     body("dni", "DNI no valido").isLength({min:7, max:8}),
@@ -34,9 +36,13 @@ router.post("/",
 
 router.put("/", (req, res) => {
 
+    const validarExistencia = "SELECT * FROM "
+
 });
 
-router.delete("/:id", validarId, verificarValidaciones, async (req, res) => {
+router.delete("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+
+    
 
     const id = Number(req.params.id);
 

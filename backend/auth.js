@@ -46,7 +46,7 @@ router.post("/login",
 
     const [usuarios] = await db.execute("SELECT * FROM usuario WHERE email = ? ", [email]);
 
-    if (usuarios.lenght === 0){
+    if (usuarios.length === 0){
         return res.status(401).json({success: false, error: "Usuario invalido"});
     }
 
@@ -62,7 +62,7 @@ router.post("/login",
     const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "4h"});
 
     res.json({
-        success: true, token, nombre: usuarios[0].nombre, apellido: usuario[0].apellido
+        success: true, token, nombre: usuarios[0].nombre, apellido: usuarios[0].apellido
     });
 
 

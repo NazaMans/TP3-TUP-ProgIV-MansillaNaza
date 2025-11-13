@@ -6,7 +6,7 @@ import usuarioRouter from "./usuario.js"
 import routerMedicos from "./medico.js"
 import routerPacientes from "./paciente.js"
 import routerTurnos from "./turno.js"
-import routerAuth from "./auth.js"
+import routerAuth, {authConfig} from "./auth.js"
 
 conectarDB();
 
@@ -16,6 +16,8 @@ const port = 3000;
 app.use(express.json());
 
 app.use(cors());
+
+authConfig();
 
 
 app.get("/", (req, res) => {

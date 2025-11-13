@@ -2,20 +2,21 @@ import express from "express";
 import { db } from "./db.js";
 import { validarId, verificarValidaciones } from "./validaciones.js";
 import {body, param} from "express-validator";
+import { verificarAutenticacion } from "./auth.js";
 
 
 const router = express.Router();
 
 //medico: id, nombre, apellido, especialidad, matricula_profesional
 
-router.get("/", async (req, res) => {
+router.get("/", verificarAutenticacion, verificarValidaciones, async (req, res) => {
     
     const [rows] = await db.execute("SELECT * FROM medico");
 
     res.json({success: true, data: rows});
 });
 
-router.get("/:id", validarId, verificarValidaciones, async (req, res) => {
+router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
 
@@ -29,7 +30,8 @@ router.get("/:id", validarId, verificarValidaciones, async (req, res) => {
 
 });
 
-router.post("/", 
+router.post("/",
+    verificarAutenticacion, 
     body("nombre", "Nombre no valido").isLength({max:20}),
     body("apellido", "Apellido no valido").isLength({max:20}),
     body("especialidad", "Especialidad no valida").isLength({max:20}),
@@ -52,7 +54,7 @@ router.put("/:id", (req, res) => {
 
 });
 
-router.delete("/:id", validarId, verificarValidaciones, async (req, res) => {
+router.delete("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
 

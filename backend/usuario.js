@@ -3,11 +3,12 @@ import { db } from "./db.js";
 import { validarId, verificarValidaciones } from "./validaciones.js";
 import {body, param} from "express-validator";
 import bycryp from "bcrypt";
+import { verificarAutenticacion } from "./auth.js";
 
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) => {
 
     const [rows] = await db.execute("SELECT * FROM usuario");
 
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
 
 });
 
-router.get(":id", validarId, verificarValidaciones, async (req, res) => {
+router.get(":id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
     const [rows] =  await db.execute("SELECT id, nombre, email WHERE id = ?", [id]);
@@ -30,7 +31,8 @@ router.get(":id", validarId, verificarValidaciones, async (req, res) => {
     res.json({succes: true, usuario: rows[0]})
 });
 
-router.post("/", 
+router.post("/",
+    verificarAutenticacion, 
     body("nombre", "Nombre no valido")
     .isAlpha("es-ES").isLength({max:20}),
     body("apellido", "Apellido no valido")
@@ -62,7 +64,7 @@ router.put("/:id", (req, res) => {
 
 })
 
-router.delete("/:id", validarId, verificarValidaciones, async (req,res) => {
+router.delete("/:id", verificarAutenticacion, validarId, verificarValidaciones, async (req,res) => {
     const id = Number(req.params.id);
 
     await db.execute("DELETE FROM usuario WHERE id = ?", [id]);
