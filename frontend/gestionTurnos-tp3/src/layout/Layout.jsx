@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router";
 import { useAuth } from "../auth/auth";
 import Ingresar from "../Ingresar/ingresar";
+import { Registrar } from "../Ingresar/Registrar";
 
 function Layout() {
 
@@ -33,6 +34,11 @@ function Layout() {
                 ) : (
                     <Ingresar />
                 )}
+            </li>
+            <li>
+                {!isAuthenticated && 
+                    <Registrar/>
+                 }
             </li>
         </nav>
         <Outlet/>

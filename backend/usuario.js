@@ -31,8 +31,7 @@ router.get(":id",verificarAutenticacion, validarId, verificarValidaciones, async
     res.json({succes: true, usuario: rows[0]})
 });
 
-router.post("/",
-    verificarAutenticacion, 
+router.post("/", 
     body("nombre", "Nombre no valido")
     .isAlpha("es-ES").isLength({max:20}),
     body("apellido", "Apellido no valido")
@@ -55,7 +54,7 @@ router.post("/",
 
     const  [result] = await db.execute("INSERT INTO usuario (nombre, apellido, email, password_hash) VALUES (?, ?, ?, ?)", [nombre, apellido, email, contraHasheada])
 
-    res.status(201).json({succes: true, data: {id: result.insertId, nombre, apellido, nombre},});
+    res.status(201).json({success: true, data: {id: result.insertId, nombre, apellido, nombre},});
   
 });
 
