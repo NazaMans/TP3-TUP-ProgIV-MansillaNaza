@@ -25,3 +25,7 @@ Authorization: Bearer {{token}}
 ###GET turnos
 GET {{url}}/turnos
 Authorization: Bearer {{token}}
+
+###GET pacientes
+GET {{url}}/pacientes
+Authorization: Bearer {{token}}
