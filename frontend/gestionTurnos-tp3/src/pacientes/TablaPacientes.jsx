@@ -62,7 +62,7 @@ export function TablaPacientes(){
                                         <Link role="button" to={`/pacientes/${p.id}`}>
                                          Ver
                                         </Link>
-                                        <Link role="button" to={`/medicos/${p.id}/modificar`}>
+                                        <Link role="button" to={`/pacientes/${p.id}/modificar`}>
                                         Modificar
                                         </Link>
                                     </div>

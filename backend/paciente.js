@@ -26,7 +26,7 @@ router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, asyn
         return res.status(404).json({success: false, message: "Paciente no encotnrado"});
     }
 
-    const [result] = await db.execute("SELECT * FROM paciente WHERE id = ?", [id]);
+    const [result] = await db.execute("SELECT id, nombre, apellido, dni, DATE_FORMAT(fecha_nacimiento, '%Y-%m-%d') AS fecha_nacimiento, obra_social FROM paciente WHERE id = ?", [id]);
 
     res.json({success: true, data: result[0]});
 
@@ -50,7 +50,7 @@ router.post("/",
 
         });
 
-router.put("/",verificarAutenticacion, validarId,
+router.put("/:id",verificarAutenticacion, validarId,
     body("nombre", "Nombre no valido").isLength({max:20}),
     body("apellido", "Apellido no valido").isLength({max:20}),
     body("dni", "DNI no valido").isLength({min:7, max:8}),

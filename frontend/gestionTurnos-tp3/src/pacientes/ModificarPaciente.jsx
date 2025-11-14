@@ -1,54 +1,64 @@
-import { useState } from "react";
+import {useState, useEffect, useCallback } from "react";
 import { useAuth } from "../auth/auth";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
-export function CargarPaciente() {
-
+export const ModificarPaciente = () => {
     const {fetchAuth} = useAuth();
-
-    // eslint-disable-next-line no-unused-vars
-    const [errores, setErrores] = useState(null);
-
+    const {id} = useParams();
     const navigate = useNavigate();
 
-    const initialValues = {
+    const [values, setValues] = useState(null)
 
-    nombre: "",
-    apellido: "",
-    dni: "",
-    fecha_nacimiento: "",
-    obra_social: ""    
-    }
+    const fetchPaciente = useCallback( async () => {
+        const response = await fetchAuth(`http://localhost:3000/pacientes/${id}`);
+        const data = await response.json();
 
-    const [values, setValues] = useState(initialValues);
+        if (!response.ok || !data.success){
+            console.log("Hubo un error: ", data.error);
+            return;
+        }
 
-    const handleSubmit = async (e) =>{
+        console.log("Paciente individual: ", data.data)
+
+        setValues(data.data)
+
+    },[fetchAuth,id]);
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setErrores(null)
+        console.log("Valores guardados Turnos: ",values);
 
-        const response = await fetchAuth("http://localhost:3000/pacientes",{
-
-            method: "POST",
+        const response = await fetchAuth(`http://localhost:3000/pacientes/${id}`,{
+            method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(values),
-
         });
 
         const data = await response.json();
 
-        if (!response.ok || !data.success){
-            if(response.status === 400){
-                return setErrores(data.errores);
-            }
+        if(!response.ok || !data.success){
+            const mensajeError = data.message || data.error || "Error al cambiar el paciente";
+            console.log("Hubo un error: ", data);
 
-            return window.alert("Error al crear paciente")
+            return window.alert(mensajeError);
         }
 
-        setValues(initialValues);
-
         navigate("/pacientes");
+    };
+
+    useEffect(()=>{
+        fetchPaciente();
+    },[fetchPaciente])
+
+
+    if (!values) {
+        return null;
     }
+
+
 
     return (
         <article>
@@ -115,4 +125,8 @@ export function CargarPaciente() {
         </article>
     )
 
+
+
+
 }
+
