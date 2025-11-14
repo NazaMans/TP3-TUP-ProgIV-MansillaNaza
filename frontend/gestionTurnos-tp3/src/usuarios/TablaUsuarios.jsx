@@ -32,6 +32,25 @@ export function TablaUsuarios(){
         fetchUsuarios();
     },[fetchUsuarios]);
 
+    const handleQuitar = async (id) => {
+        if (window.confirm("¿Desea quitar este usuario posta?")){
+
+            const response = await fetchAuth(`http://localhost:3000/usuarios/${id}`,{
+                method: "DELETE",
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success){
+                console.log("Hubo un error: ", data.error);
+                return;
+            }
+
+            await fetchUsuarios();
+
+        }
+    }
+
 
     return (
 
@@ -63,6 +82,7 @@ export function TablaUsuarios(){
                                         <Link role="button" to={`/usuarios/${u.id}/modificar`}>
                                         Modificar
                                         </Link>
+                                        <button onClick={() => handleQuitar(u.id)}>Quitar</button>
                                         
                                     </div>
                                 </td>

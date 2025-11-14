@@ -30,6 +30,25 @@ export function TablaMedicos(){
         fetchMedicos();
     },[fetchMedicos]);
 
+    const handleQuitar = async (id) => {
+        if (window.confirm("¿Desea quitar este usuario posta?")){
+
+            const response = await fetchAuth(`http://localhost:3000/medicos/${id}`,{
+                method: "DELETE",
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success){
+                console.log("Hubo un error: ", data.error);
+                return;
+            }
+
+            await fetchMedicos();
+
+        }
+    }
+
     return (
         <article>
             <h2>Tabla de los medicos</h2>
@@ -64,6 +83,7 @@ export function TablaMedicos(){
                                         <Link role="button" to={`/medicos/${m.id}/modificar`}>
                                         Modificar
                                         </Link>
+                                        <button onClick={() => handleQuitar(m.id)}>Quitar</button>
                                     </div>
                                 </td>
                             </tr>

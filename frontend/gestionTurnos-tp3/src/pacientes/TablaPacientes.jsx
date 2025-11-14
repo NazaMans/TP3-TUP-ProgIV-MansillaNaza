@@ -30,6 +30,25 @@ export function TablaPacientes(){
         fetchPacientes();
     }, [fetchPacientes]);
 
+    const handleQuitar = async (id) => {
+        if (window.confirm("¿Desea quitar este paciente posta?")){
+
+            const response = await fetchAuth(`http://localhost:3000/pacientes/${id}`,{
+                method: "DELETE",
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success){
+                console.log("Hubo un error: ", data.error);
+                return;
+            }
+
+            await fetchPacientes();
+
+        }
+    }
+
     return (
         <article>
             <h2>Tabla de los pacientes</h2>
@@ -65,6 +84,7 @@ export function TablaPacientes(){
                                         <Link role="button" to={`/pacientes/${p.id}/modificar`}>
                                         Modificar
                                         </Link>
+                                        <button onClick={() => handleQuitar(p.id)}>Quitar</button>
                                     </div>
                                 </td>
 

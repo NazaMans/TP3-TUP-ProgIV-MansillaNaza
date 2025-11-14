@@ -17,6 +17,9 @@ import { CargarPaciente } from './pacientes/CargarPaciente';
 import { ModificarPaciente } from './pacientes/ModificarPaciente';
 import { CargarMedico } from './medicos/CargarMedico';
 import { ModificarMedico } from './medicos/ModificarMedico';
+import { DetallesMedico } from './medicos/DetallesMedico';
+import { DetallesPaciente } from './pacientes/DetallesPaciente';
+import { DetallesUsuario } from './usuarios/DetallesUsuario';
 
 
 createRoot(document.getElementById('root')).render(
@@ -35,6 +38,14 @@ createRoot(document.getElementById('root')).render(
           </AuthPage>
         } />
 
+        <Route
+        path="usuarios/:id"
+        element={
+          <AuthPage>
+           <DetallesUsuario/>
+          </AuthPage>
+        } />
+
         
 
         <Route
@@ -42,6 +53,15 @@ createRoot(document.getElementById('root')).render(
         element={
           <AuthPage>
             <TablaMedicos/>
+          </AuthPage>
+        }
+        />
+
+        <Route
+        path="medicos/:id"
+        element={
+          <AuthPage>
+            <DetallesMedico/>
           </AuthPage>
         }
         />
@@ -69,6 +89,14 @@ createRoot(document.getElementById('root')).render(
         element={
           <AuthPage>
             <TablaPacientes/>
+          </AuthPage>
+        }/>
+
+        <Route
+        path='pacientes/:id'
+        element={
+          <AuthPage>
+            <DetallesPaciente/>
           </AuthPage>
         }/>
 
