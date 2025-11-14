@@ -12,7 +12,7 @@ router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) =
 
     const [rows] = await db.execute("SELECT * FROM usuario");
 
-    res.json({succes: true, usuarios: rows.map((u) => ({...u, password_hash: undefined})),
+    res.json({success: true, usuarios: rows.map((u) => ({...u, password_hash: undefined})),
 });
 
 });
@@ -27,8 +27,7 @@ router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, asyn
 
     }
 
-
-    res.json({succes: true, usuario: rows[0]})
+    res.json({success: true, usuario: rows[0]})
 });
 
 router.post("/", 

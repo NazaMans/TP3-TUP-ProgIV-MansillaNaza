@@ -37,9 +37,6 @@ export function TablaUsuarios(){
 
         <article>
             <h2>Tabla de los usuarios</h2>
-            <Link role="button" to = "/usuarios/crear">
-            Crear nuevo usuario
-            </Link>
             <div className="group">
                 <table>
                     <thead>
