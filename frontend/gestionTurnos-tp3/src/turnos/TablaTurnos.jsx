@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../auth/auth";
 import { useCallback } from "react";
 import { Link } from "react-router";
+import { CargarTurno } from "./CargarTurno";
 
 export function TablaTurnos(){
 
     const {fetchAuth} = useAuth([]);
 
     const [turnos, setTurnos] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+
 
     const fetchTurnos = useCallback(
         async () => {
@@ -30,12 +33,20 @@ export function TablaTurnos(){
         fetchTurnos();
     }, [fetchTurnos]);
 
+    const handleSuccess = () => {
+        setModalOpen(false); // Cierra el modal
+        fetchTurnos(); // Recarga la lista de turnos
+    }
+
     return (
         <article>
+            <CargarTurno 
+                open={isModalOpen} 
+                onClose={() => setModalOpen(false)}
+                onSuccess={handleSuccess}
+            />
             <h2>Tabla de turnos</h2>
-            <Link role="button" to="/medicos/crear">
-            Crear nuevo turno
-            </Link>
+            <button onClick={() => setModalOpen(true)}>Crear nuevo turno</button>
             <div className="group">
                 <table>
                     <thead>
