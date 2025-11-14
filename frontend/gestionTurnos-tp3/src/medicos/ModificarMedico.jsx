@@ -6,6 +6,7 @@ export const ModificarMedico = () => {
     const {fetchAuth} = useAuth();
     const {id} = useParams();
     const navigate = useNavigate();
+    const [errores, setErrores] = useState(null);
 
     const [values, setValues] = useState(null)
 
@@ -14,8 +15,9 @@ export const ModificarMedico = () => {
         const data = await response.json();
 
         if (!response.ok || !data.success){
-            console.log("Hubo un error: ", data.error);
-            return;
+            if(response.status === 400){
+                return setErrores(data.errores);
+            }
         }
 
         console.log("MEdico individual: ", data.medico)
@@ -40,10 +42,15 @@ export const ModificarMedico = () => {
         const data = await response.json();
 
         if(!response.ok || !data.success){
+            if (response.status === 400) {
+                return setErrores(data.errores);
+            }
             const mensajeError = data.message || data.error || "Error al cambiar el medico";
             console.log("Hubo un error: ", data);
 
             return window.alert(mensajeError);
+
+            
         }
 
         navigate("/medicos");
@@ -70,7 +77,11 @@ export const ModificarMedico = () => {
                             onChange={(e) => 
                                 setValues({...values, nombre: e.target.value})
                             } 
+                            aria-invalid={errores && errores.some((e) => e.path === "nombre")}
                             />
+                            {errores && (
+                             <small>{errores.filter((e) => e.path === "nombre").map((e) => e.msg).join(", ")}</small>
+                        )}
                         </label>
                         <label>
                             Apellido
@@ -79,7 +90,11 @@ export const ModificarMedico = () => {
                             onChange={(e) => 
                                 setValues({...values, apellido: e.target.value})
                             } 
+                            aria-invalid={errores && errores.some((e) => e.path === "apellido")}
                             />
+                            {errores && (
+                             <small>{errores.filter((e) => e.path === "apellido").map((e) => e.msg).join(", ")}</small>
+                        )}
                         </label>
                         <label>
                             Especialidad
@@ -89,7 +104,11 @@ export const ModificarMedico = () => {
                             onChange={(e) => 
                                 setValues({...values, especialidad: e.target.value})
                             } 
+                            aria-invalid={errores && errores.some((e) => e.path === "especialidad")}
                             />
+                            {errores && (
+                             <small>{errores.filter((e) => e.path === "especialidad").map((e) => e.msg).join(", ")}</small>
+                        )}
                         </label>
                         <label>
                             MAtricula profesional
@@ -98,7 +117,9 @@ export const ModificarMedico = () => {
                             onChange={(e) => 
                                 setValues({...values, matricula_profesional: e.target.value})
                             } 
+                            aria-invalid={errores && errores.some((e) => e.path === "matricula_profesional")}
                             />
+                            
                         </label>
                     </fieldset>
                     <footer>

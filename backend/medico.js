@@ -32,10 +32,10 @@ router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, asyn
 
 router.post("/",
     verificarAutenticacion, 
-    body("nombre", "Nombre no valido").isLength({max:20}),
-    body("apellido", "Apellido no valido").isLength({max:20}),
-    body("especialidad", "Especialidad no valida").isLength({max:20}),
-    body("matricula_profesional", "Matricula no valida").isLength({min:10, max:30}),
+    body("nombre", "Nombre no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("apellido", "Apellido no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("especialidad", "Especialidad no valida").isLength({max:20}).isAlpha("es-ES"),
+    body("matricula_profesional", "Matricula no valida").isInt({min:10}).isLength({max:30}),
     verificarValidaciones, 
     async (req, res) => {
 
@@ -49,10 +49,10 @@ router.post("/",
     })
 
 router.put("/:id",verificarAutenticacion, validarId,
-    body("nombre", "Nombre no valido").isLength({max:20}),
-    body("apellido", "Apellido no valido").isLength({max:20}),
-    body("especialidad", "Especialidad no valida").isLength({max:20}),
-    body("matricula_profesional", "Matricula no valida").isLength({min:10, max:30}),
+    body("nombre", "Nombre no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("apellido", "Apellido no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("especialidad", "Especialidad no valida").isLength({max:20}).isAlpha("es-ES"),
+    body("matricula_profesional", "Matricula no valida").isInt({min:10}).isLength({max:30}),
     verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);

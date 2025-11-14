@@ -6,7 +6,6 @@ export function CargarMedico() {
 
     const {fetchAuth} = useAuth();
 
-    // eslint-disable-next-line no-unused-vars
     const [errores, setErrores] = useState(null);
 
     const navigate = useNavigate();
@@ -61,7 +60,11 @@ export function CargarMedico() {
                         onChange={(e) => 
                             setValues({...values, nombre: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "nombre")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "nombre").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         Apellido
@@ -70,7 +73,11 @@ export function CargarMedico() {
                         onChange={(e) => 
                             setValues({...values, apellido: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "apellido")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "apellido").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         Especialidad
@@ -80,7 +87,11 @@ export function CargarMedico() {
                         onChange={(e) => 
                             setValues({...values, especialidad: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "especialidad")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "especialidad").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         MAtricula profesional
@@ -89,7 +100,12 @@ export function CargarMedico() {
                         onChange={(e) => 
                             setValues({...values, matricula_profesional: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "matricula_profesional")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "matricuka_profesional").map((e) => e.msg).join(", ")}</small>
+                        )}
+                         
                     </label>
                 </fieldset>
                 <footer>
