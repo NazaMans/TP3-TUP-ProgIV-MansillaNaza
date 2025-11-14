@@ -22,7 +22,7 @@ router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, asyn
 
     const [rows] = await db.execute("SELECT * FROM medico WHERE id = ?", [id]);
 
-    if (rows.lenght === 0){
+    if (rows.length === 0){
         return res.status(404).json({success: false, message: "Medico no encontrado"});
     }
 

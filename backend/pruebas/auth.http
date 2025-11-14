@@ -58,7 +58,7 @@ Authorization: Bearer {{token}}
 
 ###GET medicos
 
-GET {{url}}/turnos/9/info
+GET {{url}}/medicos/4
 Authorization: Bearer {{token}}
 
 ###GET turnos

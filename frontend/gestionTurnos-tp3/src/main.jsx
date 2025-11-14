@@ -15,6 +15,8 @@ import { CargarTurno } from './turnos/CargarTurno';
 import {DetallesTurno} from './turnos/DetallesTurno';
 import { CargarPaciente } from './pacientes/CargarPaciente';
 import { ModificarPaciente } from './pacientes/ModificarPaciente';
+import { CargarMedico } from './medicos/CargarMedico';
+import { ModificarMedico } from './medicos/ModificarMedico';
 
 
 createRoot(document.getElementById('root')).render(
@@ -40,6 +42,24 @@ createRoot(document.getElementById('root')).render(
         element={
           <AuthPage>
             <TablaMedicos/>
+          </AuthPage>
+        }
+        />
+
+        <Route
+        path="medicos/crear"
+        element={
+          <AuthPage>
+            <CargarMedico/>
+          </AuthPage>
+        }
+        />
+
+        <Route
+        path="medicos/:id/modificar"
+        element={
+          <AuthPage>
+            <ModificarMedico/>
           </AuthPage>
         }
         />
