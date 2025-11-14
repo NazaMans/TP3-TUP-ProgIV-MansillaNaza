@@ -30,7 +30,7 @@ function Layout() {
             </ul>
             <li>
                 {isAuthenticated ? (
-                    <button onClick={() => logout}>Cerrar sesion</button>
+                    <button onClick={() => logout()}>Cerrar sesion</button>
                 ) : (
                     <Ingresar />
                 )}
