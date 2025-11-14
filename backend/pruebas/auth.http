@@ -66,7 +66,7 @@ GET {{url}}/turnos
 Authorization: Bearer {{token}}
 
 ###GET pacientes
-GET {{url}}/usuarios/8
+GET {{url}}/usuarios
 Authorization: Bearer {{token}}
 
 ###POST medico
@@ -76,10 +76,10 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre": "Nazareno",
-    "apellido": "Mansilla",
-    "especialidad": "Pediatria",
-    "matricula_profesional": "3445546465"
+    "nombre": "Jose",
+    "apellido": "Trulillo",
+    "especialidad": "Timbero",
+    "matricula_profesional": "556456565646"
 }
 
 ### POST de paciente
@@ -88,7 +88,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre": "Dario",
+    "nombre": "Dario76",
     "apellido": "Mansilla",
     "dni": "4546545",
     "fecha_nacimiento": "1969-12-20",

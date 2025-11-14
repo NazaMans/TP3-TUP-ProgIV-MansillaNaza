@@ -34,13 +34,12 @@ router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, asyn
 
 router.post("/",
     verificarAutenticacion,
-    body("nombre", "Nombre no valido").isLength({max:20}),
-    body("apellido", "Apellido no valido").isLength({max:20}),
-    body("dni", "DNI no valido").isLength({min:7, max:8}),
+    body("nombre", "Nombre no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("apellido", "Apellido no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("dni", "DNI no valido").isLength({min:1}).isLength({max:10}),
     body("fecha_nacimiento", "Fecha de nacimiento no valida").isDate(),
-    body("obra_social", "Obra social no valida").isLength({max:20}),
+    body("obra_social", "Obra social no valida").isLength({max:20}).isAlpha("es-ES"),
     verificarValidaciones, async (req, res) => {
-
 
         const {nombre, apellido, dni, fecha_nacimiento, obra_social} = req.body;
 
@@ -51,11 +50,11 @@ router.post("/",
         });
 
 router.put("/:id",verificarAutenticacion, validarId,
-    body("nombre", "Nombre no valido").isLength({max:20}),
-    body("apellido", "Apellido no valido").isLength({max:20}),
-    body("dni", "DNI no valido").isLength({min:7, max:8}),
+    body("nombre", "Nombre no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("apellido", "Apellido no valido").isLength({max:20}).isAlpha("es-ES"),
+    body("dni", "DNI no valido").isLength({min:1}).isLength({max:10}),
     body("fecha_nacimiento", "Fecha de nacimiento no valida").isDate(),
-    body("obra_social", "Obra social no valida").isLength({max:20}),
+    body("obra_social", "Obra social no valida").isLength({max:20}).isAlpha("es-ES"),
     verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);

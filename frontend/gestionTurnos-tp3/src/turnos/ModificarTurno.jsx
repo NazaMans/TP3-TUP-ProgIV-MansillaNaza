@@ -10,6 +10,7 @@ export const ModificarTurno = () => {
     const [values, setValues] = useState(null)
     const [pacientes, setPacientes] = useState([]);
     const [medicos, setMedicos] = useState([]);
+    const [errores, setErrores] = useState(null);
 
     const fetchTurno = useCallback( async () => {
         const response = await fetchAuth(`http://localhost:3000/turnos/${id}`);
@@ -75,10 +76,14 @@ export const ModificarTurno = () => {
         const data = await response.json();
 
         if(!response.ok || !data.success){
+            if (response.status === 400) {
+                return setErrores(data.errores);
+            }
             const mensajeError = data.message || data.error || "Error al cambiar el turno";
             console.log("Hubo un error: ", data);
 
             return window.alert(mensajeError);
+  
         }
 
         navigate("/turnos");
@@ -181,7 +186,11 @@ export const ModificarTurno = () => {
                         onChange={(e) => 
                             setValues({...values, observaciones: e.target.value})
                         }
+                        aria-invalid={errores && errores.some((e) => e.path === "observaciones")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "observaciones").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     </fieldset>
                     <footer>

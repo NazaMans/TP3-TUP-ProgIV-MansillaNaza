@@ -6,7 +6,6 @@ export function CargarPaciente() {
 
     const {fetchAuth} = useAuth();
 
-    // eslint-disable-next-line no-unused-vars
     const [errores, setErrores] = useState(null);
 
     const navigate = useNavigate();
@@ -62,7 +61,11 @@ export function CargarPaciente() {
                         onChange={(e) => 
                             setValues({...values, nombre: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "nombre")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "nombre").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         Apellido
@@ -71,7 +74,11 @@ export function CargarPaciente() {
                         onChange={(e) => 
                             setValues({...values, apellido: e.target.value})
                         } 
+                        aria-invalid={errores && errores.some((e) => e.path === "apellido")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "apellido").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         DNI
@@ -81,8 +88,12 @@ export function CargarPaciente() {
                         value={values.dni}
                         onChange={(e) => 
                             setValues({...values, dni: e.target.value})
-                        } 
+                        }
+                        aria-invalid={errores && errores.some((e) => e.path === "dni")} 
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "dni").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     <label>
                         Fecha de nacimiento
@@ -93,7 +104,9 @@ export function CargarPaciente() {
                         onChange={(e) => 
                             setValues({...values, fecha_nacimiento: e.target.value})
                         }
+
                         />
+                        
                     </label>
                     <label>
                         Obra social
@@ -101,8 +114,12 @@ export function CargarPaciente() {
                         value={values.obra_social}
                         onChange={(e) => 
                             setValues({...values, obra_social: e.target.value})
-                        } 
+                        }
+                        aria-invalid={errores && errores.some((e) => e.path === "obra_social")} 
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "obra_social").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                 </fieldset>
                 <footer>

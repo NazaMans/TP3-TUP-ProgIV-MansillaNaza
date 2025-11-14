@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../auth/auth";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 export function CargarTurno() {
 
     const {fetchAuth} = useAuth();
-    // eslint-disable-next-line no-unused-vars
     const [errores, setErrores] = useState(null);
 
     const navigate = useNavigate();
@@ -175,11 +174,18 @@ export function CargarTurno() {
                         onChange={(e) => 
                             setValues({...values, observaciones: e.target.value})
                         }
+                         aria-invalid={errores && errores.some((e) => e.path === "observaciones")}
                         />
+                        {errores && (
+                             <small>{errores.filter((e) => e.path === "observaciones").map((e) => e.msg).join(", ")}</small>
+                        )}
                     </label>
                     </fieldset>
                     <footer>
                         <input type="submit" value="Guardar turno"/>
+                        <Link role="button" to="/turnos">
+                            Cancelar
+                        </Link>
                     </footer>
                 </form>
             </article>
