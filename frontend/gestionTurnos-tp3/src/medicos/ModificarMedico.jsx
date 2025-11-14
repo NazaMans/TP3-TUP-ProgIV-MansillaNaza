@@ -49,8 +49,7 @@ export const ModificarMedico = () => {
             console.log("Hubo un error: ", data);
 
             return window.alert(mensajeError);
-
-            
+  
         }
 
         navigate("/medicos");
