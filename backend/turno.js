@@ -47,7 +47,7 @@ router.post("/",verificarAutenticacion,
     body("medico_id", "Medico no valido").isInt({min:1}),
     body("fecha", "Fecha no valida").isDate(),
     body("hora", "Hora no valida").isTime(),
-    body("estado", "Estado no valido").isString().isIn(["pendiente", "atendido", "cancelado"]),
+    body("estado", "Estado no valido").isString().isIn(["Pendiente", "Atendido", "Cancelado"]),
     body("observaciones", "Observaciones no validas").isString().isLength({max:200}),
     verificarValidaciones,
     async (req, res) => {
