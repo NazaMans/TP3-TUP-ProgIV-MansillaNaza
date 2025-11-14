@@ -15,7 +15,7 @@ router.get("/",verificarAutenticacion,
 
     const {paciente_id, medico_id} = req.query;
 
-    let sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, t.fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id";
+    let sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, DATE_FORMAT(t.fecha, '%Y-%m-%d') AS fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id";
 
     const params = [];
     const condiciones = [];
@@ -39,6 +39,20 @@ router.get("/",verificarAutenticacion,
     res.json({success: true, data: rows});
 
 });
+
+router.get("/:id", verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+    
+    const id = Number(req.params.id);
+
+    const [rows] = await db.execute("SELECT id, paciente_id, medico_id, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, observaciones FROM turno WHERE id = ?",[id]);
+
+    if (rows.length === 0){
+        return res.status(404).json({success: false, message: "Turno no encontrado"});
+    }
+
+    res.status(200).json({success: true, data: rows[0]});
+
+})
 
 
 
@@ -65,7 +79,7 @@ router.put("/:id",verificarAutenticacion, validarId,
     body("medico_id", "Medico no valido").isInt({min:1}),
     body("fecha", "Fecha no valida").isDate(),
     body("hora", "Hora no valida").isTime(),
-    body("estado", "Estado no valido").isString().isIn(["pendiente", "atendido", "cancelado"]),
+    body("estado", "Estado no valido").isString().isIn(["Pendiente", "Atendido", "Cancelado"]),
     body("observaciones", "Observaciones no validas").isString().isLength({max:200}),
     verificarValidaciones, 
     async (req, res) => {
@@ -87,7 +101,7 @@ router.put("/:id",verificarAutenticacion, validarId,
         return res.status(400).json({success: false, message: "Fecha y hora ya ocupadas"});
     }
 
-    const [result] = await db.execute("UPDATE turno SET paciente_id = ?, medico_id = ?, fecha = ?, hora = ?, estado = ?, observaciones = ? WHERE id = id", [paciente_id, medico_id, fecha, hora, estado, observaciones, id]);
+    const [result] = await db.execute("UPDATE turno SET paciente_id = ?, medico_id = ?, fecha = ?, hora = ?, estado = ?, observaciones = ? WHERE id = ?", [paciente_id, medico_id, fecha, hora, estado, observaciones, id]);
 
     res.json({success: true, data: {id, paciente_id, medico_id, fecha, hora, estado, observaciones}});
 

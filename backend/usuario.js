@@ -17,10 +17,10 @@ router.get("/",verificarAutenticacion, verificarValidaciones, async (req, res) =
 
 });
 
-router.get(":id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+router.get("/:id",verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
 
     const id = Number(req.params.id);
-    const [rows] =  await db.execute("SELECT id, nombre, email WHERE id = ?", [id]);
+    const [rows] =  await db.execute("SELECT id, nombre, apellido, email FROM usuario WHERE id = ?", [id]);
 
     if (rows.lenght === 0){
         return res.status(404).json({success: false, message: "Usuario no encontrado"})

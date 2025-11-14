@@ -28,12 +28,37 @@ Authorization: Bearer {{token}}
 @token = {{login.response.body.token}}
 
 ###
-GET {{url}}/usuarios
+PUT {{url}}/turnos/9
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "paciente_id": 2,
+    "medico_id": 1,
+    "fecha": "2024-11-20", 
+    "hora": "16:30",
+    "estado": "Pendiente",
+    "observaciones": "Esta gaga" 
+}
+
+### POST de turno
+POST {{url}}/turnos
+Content-Type: application/json
+
+{
+    "paciente_id": 2,
+    "medico_id": 1,
+    "fecha": "2024-12-15", 
+    "hora": "16:30",
+    "estado": "pendiente",
+    "observaciones": "El paciente es medio medio" 
+}
+
 Authorization: Bearer {{token}}
 
 ###GET medicos
 
-GET {{url}}/medicos
+GET {{url}}/turnos/9
 Authorization: Bearer {{token}}
 
 ###GET turnos
