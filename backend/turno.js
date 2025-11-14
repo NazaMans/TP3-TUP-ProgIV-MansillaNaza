@@ -54,6 +54,22 @@ router.get("/:id", verificarAutenticacion, validarId, verificarValidaciones, asy
 
 })
 
+router.get("/:id/info", verificarAutenticacion, validarId, verificarValidaciones, async (req, res) => {
+    
+    const id = Number(req.params.id);
+
+     let sql = "SELECT t.id, p.nombre AS nombre_paciente, m.nombre AS nombre_medico, DATE_FORMAT(t.fecha, '%Y-%m-%d') AS fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id WHERE t.id = ?";
+
+     const [rows] = await db.execute(sql, [id]);
+
+    if (rows.length === 0){
+        return res.status(404).json({success: false, message: "Turno no encontrado"});
+    }
+
+    res.status(200).json({success: true, data: rows[0]});
+
+})
+
 
 
 router.post("/",verificarAutenticacion, 
