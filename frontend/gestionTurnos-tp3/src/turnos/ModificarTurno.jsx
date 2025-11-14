@@ -1,30 +1,32 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../auth/auth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
-export function CargarTurno() {
-
+export const ModificarTurno = () => {
     const {fetchAuth} = useAuth();
-    // eslint-disable-next-line no-unused-vars
-    const [errores, setErrores] = useState(null);
-
+    const {id} = useParams();
     const navigate = useNavigate();
 
+    const [values, setValues] = useState(null)
     const [pacientes, setPacientes] = useState([]);
     const [medicos, setMedicos] = useState([]);
 
-    const initialValues = {
-        paciente_id: "",
-        medico_id: "",
-        fecha: "",
-        hora: "",
-        estado: "",
-        observaciones: ""
-    };
+    const fetchTurno = useCallback( async () => {
+        const response = await fetchAuth(`http://localhost:3000/turnos/${id}`);
+        const data = await response.json();
 
-    const [values, setValues] = useState(initialValues);
+        if (!response.ok || !data.success){
+            console.log("Hubo un error: ", data.error);
+            return;
+        }
 
-    const fetchMedicos = useCallback(
+        console.log("Turno individual: ", data.data)
+
+        setValues(data.data)
+
+    },[fetchAuth,id]);
+
+     const fetchMedicos = useCallback(
         async () => {
             const response = await fetchAuth("http://localhost:3000/medicos");
             const data = await response.json();
@@ -41,7 +43,7 @@ export function CargarTurno() {
         [fetchAuth]
     )
 
-    const fetchPacientes = useCallback(
+     const fetchPacientes = useCallback(
         async () => {
             const response = await fetchAuth("http://localhost:3000/pacientes");
             const data = await response.json();
@@ -57,41 +59,45 @@ export function CargarTurno() {
         },
         [fetchAuth]
     )
-
-    useEffect(() =>{
-        fetchMedicos();
-        fetchPacientes();
-    }, [fetchMedicos, fetchPacientes])
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setErrores(null);
+        console.log("Valores guardados Turnos: ",values);
 
-        const response = await fetchAuth("http://localhost:3000/turnos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
+        const response = await fetchAuth(`http://localhost:3000/turnos/${id}`,{
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(values),
         });
 
         const data = await response.json();
 
-        if (!response.ok || !data.success){
-            if(response.status === 400){
-                return setErrores(data.errores);
-            }
+        if(!response.ok || !data.success){
+            const mensajeError = data.message || data.error || "Error al cambiar el turno";
+            console.log("Hubo un error: ", data);
 
-            return window.alert("Error al crear el turno")
+            return window.alert(mensajeError);
         }
 
-        setValues(initialValues); 
-
         navigate("/turnos");
+    };
 
+    useEffect(()=>{
+    fetchTurno();
+    fetchMedicos();
+    fetchPacientes()
+    },[fetchTurno, fetchMedicos, fetchPacientes]);
+
+
+    if (!values) {
+        return null;
     }
 
 
-  return (
+
+    return (
             <article>
                 <h2>Ingrese datos del turno</h2>
                 <form onSubmit={handleSubmit} >
@@ -123,7 +129,7 @@ export function CargarTurno() {
                             setValues({...values, medico_id: e.target.value})
                         }
                         >
-                            <option value="" disbaled>Seleccione un medico</option>
+                            <option value="" disabled>Seleccione un medico</option>
                             {medicos.map((m) => (
                                 <option key={m.id} value={m.id}>
                                     {m.nombre} {m.apellido} {m.especialidad}
@@ -162,7 +168,7 @@ export function CargarTurno() {
                             setValues({...values,estado: e.target.value})
                         }
                         >
-                            <option value="" disables>Seleccione un estado</option>
+                            <option value="" disabled >Seleccione un estado</option>
                             <option value="Pendiente">Pendiente</option>
                             <option value="Atendido">Atendido</option>
                             <option value="Cancelado">Cancelado</option>
@@ -180,8 +186,16 @@ export function CargarTurno() {
                     </fieldset>
                     <footer>
                         <input type="submit" value="Guardar turno"/>
+                        <Link role="button" to="/turnos">
+                            Cancelar
+                        </Link>
                     </footer>
                 </form>
             </article>
-  )
+    )
+
+
+
+
 }
+

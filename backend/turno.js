@@ -58,7 +58,7 @@ router.get("/:id/info", verificarAutenticacion, validarId, verificarValidaciones
     
     const id = Number(req.params.id);
 
-     let sql = "SELECT t.id, p.nombre AS nombre_paciente, p.apellido AS apellido_paciente, p.dni AS dni_paciente , m.nombre AS nombre_medico, DATE_FORMAT(t.fecha, '%Y-%m-%d') AS fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id WHERE t.id = ?";
+     let sql = "SELECT t.id, p.nombre AS nombre, p.apellido AS apellido, p.dni AS dni , m.nombre AS nombre_medico, m.apellido AS apellido_medico,m.especialidad AS especialidad,m.matricula_profesional AS matricula, DATE_FORMAT(t.fecha, '%Y-%m-%d') AS fecha, t.hora, t.estado, t.observaciones FROM turno t INNER JOIN paciente p ON t.paciente_id = p.id INNER JOIN medico m ON t.medico_id = m.id WHERE t.id = ?";
 
      const [rows] = await db.execute(sql, [id]);
 
